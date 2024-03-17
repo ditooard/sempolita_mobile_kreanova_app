@@ -14,7 +14,7 @@ class _SplashPageState extends State<SplashPage> {
     // Use Future.delayed to wait for 3 seconds
     Future.delayed(Duration(seconds: 3), () {
       // Navigate to the '/started' route
-      Navigator.pushReplacementNamed(context, '/login');
+      Navigator.pushReplacementNamed(context, '/getStarted');
     });
   }
 

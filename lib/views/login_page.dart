@@ -175,8 +175,7 @@ class _LoginPage extends State<LoginPage> {
                         height: 50.57,
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.pushReplacementNamed(
-                              context, '/profile');
+                            Navigator.pushReplacementNamed(context, '/');
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Color(0xFF31C48D), // Background color
@@ -222,28 +221,6 @@ class _LoginPage extends State<LoginPage> {
                               fontWeight: FontWeight.w500,
                               height: 0,
                             ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Positioned(
-                      left: 63,
-                      top: 310,
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushReplacementNamed(
-                              context, '/termsConditions');
-                        },
-                        child: Text(
-                          'Terms and Conditions',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color(0xFF31C48D),
-                            fontSize: 14,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w300,
-                            decoration: TextDecoration.underline,
-                            height: 0,
                           ),
                         ),
                       ),

@@ -129,7 +129,7 @@ class _TermsConditions extends State<TermsConditions> {
                                         GestureDetector(
                                           onTap: () {
                                             Navigator.pushReplacementNamed(
-                                                context, '/login');
+                                                context, '/register');
                                           },
                                           child: Container(
                                             width: 24,
