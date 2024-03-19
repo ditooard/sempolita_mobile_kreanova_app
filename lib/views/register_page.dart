@@ -3,13 +3,27 @@ import 'package:flutter/services.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
-  State<RegisterPage> createState() => _LoginPage();
+  State<RegisterPage> createState() => _RegisterPage();
 }
 
-class _LoginPage extends State<RegisterPage> {
+class _RegisterPage extends State<RegisterPage> {
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
+  FocusNode _namaBalita = FocusNode();
+  FocusNode _namaOrtu = FocusNode();
+  FocusNode _noHp = FocusNode();
+  FocusNode _pass = FocusNode();
+  FocusNode _confirmPass = FocusNode();
+
   @override
   void initState() {
     super.initState();
+  }
+
+  void _fieldFocusChange(
+      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
   }
 
   @override
@@ -69,7 +83,14 @@ class _LoginPage extends State<RegisterPage> {
                                 width: 287,
                                 height: 52,
                                 child: TextFormField(
+                                  focusNode: _namaBalita,
+                                  textInputAction: TextInputAction.next,
+                                  onFieldSubmitted: (term) {
+                                    _fieldFocusChange(
+                                        context, _namaBalita, _namaOrtu);
+                                  },
                                   decoration: InputDecoration(
+                                    hintText : "Masukan Nama Balita Anda",
                                     hintStyle: TextStyle(
                                         fontSize: 12, color: Colors.grey),
                                     contentPadding:
@@ -119,7 +140,14 @@ class _LoginPage extends State<RegisterPage> {
                                 width: 287,
                                 height: 52,
                                 child: TextFormField(
+                                  focusNode: _namaOrtu,
+                                  textInputAction: TextInputAction.next,
+                                  onFieldSubmitted: (term) {
+                                    _fieldFocusChange(
+                                        context, _namaOrtu, _noHp);
+                                  },
                                   decoration: InputDecoration(
+                                    hintText : "Masukan Nama Anda",
                                     hintStyle: TextStyle(
                                         fontSize: 12, color: Colors.grey),
                                     contentPadding:
@@ -169,12 +197,18 @@ class _LoginPage extends State<RegisterPage> {
                                 width: 287,
                                 height: 52,
                                 child: TextFormField(
+                                  focusNode: _noHp,
+                                  textInputAction: TextInputAction.next,
+                                  onFieldSubmitted: (term) {
+                                    _fieldFocusChange(context, _noHp, _pass);
+                                  },
                                   inputFormatters: <TextInputFormatter>[
                                     FilteringTextInputFormatter
                                         .digitsOnly // Allow only digits
                                   ],
                                   keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
+                                    hintText : "Masukan Nomor Telepon Anda",
                                     hintStyle: TextStyle(
                                         fontSize: 12, color: Colors.grey),
                                     contentPadding:
@@ -224,9 +258,16 @@ class _LoginPage extends State<RegisterPage> {
                                 width: 287,
                                 height: 52,
                                 child: TextFormField(
+                                  focusNode: _pass,
+                                  textInputAction: TextInputAction.next,
+                                  onFieldSubmitted: (term) {
+                                    _fieldFocusChange(
+                                        context, _pass, _confirmPass);
+                                  },
                                   obscureText:
-                                      true, // This hides the entered text as dots for a password field
+                                      !_isPasswordVisible, // This hides the entered text as dots for a password field
                                   decoration: InputDecoration(
+                                    hintText : "Masukan Password Anda",
                                     hintStyle: TextStyle(
                                         fontSize: 12, color: Colors.grey),
                                     contentPadding:
@@ -236,16 +277,19 @@ class _LoginPage extends State<RegisterPage> {
                                           BorderSide(color: Color(0xFFDBD7EB)),
                                       borderRadius: BorderRadius.circular(17),
                                     ),
-                                    suffixIcon: GestureDetector(
-                                      onTap: () {
-                                        // Implement the logic to toggle password visibility
-                                      },
-                                      child: Icon(
-                                        Icons
-                                            .visibility_off, // Use Icons.visibility if you want an open eye initially
-                                        color: Colors
-                                            .grey, // You can change the color as needed
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        _isPasswordVisible
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: Colors.grey, // Warna ikon mata
                                       ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _isPasswordVisible =
+                                              !_isPasswordVisible;
+                                        });
+                                      },
                                     ),
                                   ),
                                 ),
@@ -286,9 +330,11 @@ class _LoginPage extends State<RegisterPage> {
                                 width: 287,
                                 height: 52,
                                 child: TextFormField(
+                                  focusNode: _confirmPass,
                                   obscureText:
-                                      true, // This hides the entered text as dots for a password field
+                                      !_isConfirmPasswordVisible, // This hides the entered text as dots for a password field
                                   decoration: InputDecoration(
+                                    hintText : "Ulangi Password Anda",
                                     hintStyle: TextStyle(
                                         fontSize: 12, color: Colors.grey),
                                     contentPadding:
@@ -298,16 +344,19 @@ class _LoginPage extends State<RegisterPage> {
                                           BorderSide(color: Color(0xFFDBD7EB)),
                                       borderRadius: BorderRadius.circular(17),
                                     ),
-                                    suffixIcon: GestureDetector(
-                                      onTap: () {
-                                        // Implement the logic to toggle password visibility
-                                      },
-                                      child: Icon(
-                                        Icons
-                                            .visibility_off, // Use Icons.visibility if you want an open eye initially
-                                        color: Colors
-                                            .grey, // You can change the color as needed
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        _isConfirmPasswordVisible
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: Colors.grey, // Warna ikon mata
                                       ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _isConfirmPasswordVisible =
+                                              !_isConfirmPasswordVisible;
+                                        });
+                                      },
                                     ),
                                   ),
                                 ),

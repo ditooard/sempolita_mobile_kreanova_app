@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -6,9 +7,18 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPage extends State<LoginPage> {
+  bool _isPasswordVisible = false;
+  FocusNode _noHp = FocusNode();
+  FocusNode _pass = FocusNode();
   @override
   void initState() {
     super.initState();
+  }
+
+  void _fieldFocusChange(
+      BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
+    currentFocus.unfocus();
+    FocusScope.of(context).requestFocus(nextFocus);
   }
 
   @override
@@ -68,6 +78,16 @@ class _LoginPage extends State<LoginPage> {
                                 width: 287,
                                 height: 52,
                                 child: TextFormField(
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter
+                                        .digitsOnly // Allow only digits
+                                  ],
+                                  keyboardType: TextInputType.number,
+                                  focusNode: _noHp,
+                                  textInputAction: TextInputAction.next,
+                                  onFieldSubmitted: (term) {
+                                    _fieldFocusChange(context, _noHp, _pass);
+                                  },
                                   decoration: InputDecoration(
                                     hintText: 'Masukan Nomor Telepon',
                                     hintStyle: TextStyle(
@@ -119,8 +139,9 @@ class _LoginPage extends State<LoginPage> {
                                 width: 287,
                                 height: 52,
                                 child: TextFormField(
+                                  focusNode: _pass,
                                   obscureText:
-                                      true, // This hides the entered text as dots for a password field
+                                      !_isPasswordVisible, // This hides the entered text as dots for a password field
                                   decoration: InputDecoration(
                                     hintText: 'Masukan Password',
                                     hintStyle: TextStyle(
@@ -132,16 +153,19 @@ class _LoginPage extends State<LoginPage> {
                                           BorderSide(color: Color(0xFFDBD7EB)),
                                       borderRadius: BorderRadius.circular(17),
                                     ),
-                                    suffixIcon: GestureDetector(
-                                      onTap: () {
-                                        // Implement the logic to toggle password visibility
-                                      },
-                                      child: Icon(
-                                        Icons
-                                            .visibility_off, // Use Icons.visibility if you want an open eye initially
-                                        color: Colors
-                                            .grey, // You can change the color as needed
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        _isPasswordVisible
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
+                                        color: Colors.grey, // Warna ikon mata
                                       ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _isPasswordVisible =
+                                              !_isPasswordVisible;
+                                        });
+                                      },
                                     ),
                                   ),
                                 ),
@@ -220,6 +244,7 @@ class _LoginPage extends State<LoginPage> {
                               fontFamily: 'Poppins',
                               fontWeight: FontWeight.w500,
                               height: 0,
+                              decoration: TextDecoration.underline,
                             ),
                           ),
                         ),

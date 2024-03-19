@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class LupaPassword extends StatefulWidget {
   @override
@@ -53,6 +54,11 @@ class _LupaPassword extends State<LupaPassword> {
                                 width: 287,
                                 height: 52,
                                 child: TextFormField(
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter
+                                        .digitsOnly // Allow only digits
+                                  ],
+                                  keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
                                     hintText: 'Masukan Nomor Telepon',
                                     hintStyle: TextStyle(
