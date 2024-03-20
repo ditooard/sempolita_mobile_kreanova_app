@@ -3,6 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:sempolita_kreanova_app/shared/theme.dart';
+import 'package:sempolita_kreanova_app/views/dashboard/information_page.dart';
+import 'package:sempolita_kreanova_app/views/dashboard/iot/detail_iot_page.dart';
+import 'package:sempolita_kreanova_app/views/dashboard/iot/iot_page.dart';
+import 'package:sempolita_kreanova_app/views/dashboard/landing_page.dart';
+import 'package:sempolita_kreanova_app/views/dashboard/profile/change_pass_page.dart';
+import 'package:sempolita_kreanova_app/views/dashboard/profile/detail_profile.dart';
+import 'package:sempolita_kreanova_app/views/dashboard/profile/profile_page.dart';
 import 'package:sempolita_kreanova_app/views/forget_pass_page.dart';
 import 'package:sempolita_kreanova_app/views/get_started_page.dart';
 import 'package:sempolita_kreanova_app/views/login_page.dart';
@@ -58,6 +65,13 @@ class MyApp extends StatelessWidget {
         '/termsConditions': (context) => TermsConditions(),
         '/login': (context) => LoginPage(),
         '/forgetpass': (context) => LupaPassword(),
+        '/profile': (context) => ProfilePage(),
+        '/detailProfile': (context) => DetailProfile(),
+        '/ubahPass': (context) => UbahPassword(),
+        '/detailIot': (context) => DetailIot(),
+        '/iotPage': (context) => IotPage(),
+        '/informationPage': (context) => InformationPage(),
+        '/landingPage': (context) => LandingPage(),
       },
     );
   }
