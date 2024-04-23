@@ -89,7 +89,7 @@ class _LoginPage extends State<LoginPage> {
                                     _fieldFocusChange(context, _noHp, _pass);
                                   },
                                   decoration: InputDecoration(
-                                    hintText: 'Masukan Nomor Telepon',
+                                    hintText: 'Masukan Nomor Telepon atau E-mail',
                                     hintStyle: TextStyle(
                                         fontSize: 12, color: Colors.grey),
                                     contentPadding:
@@ -109,7 +109,7 @@ class _LoginPage extends State<LoginPage> {
                                 width: 268,
                                 height: 19.31,
                                 child: Text(
-                                  'Nomor Telepon',
+                                  'Nomor Telepon atau E-mail',
                                   style: TextStyle(
                                     color: Color(0xFF1E1349),
                                     fontSize: 14,

@@ -35,7 +35,7 @@ class _RegisterPage extends State<RegisterPage> {
         child: SafeArea(
             child: Container(
           width: lebarLayar,
-          height: tinggiLayar,
+          height: 800,
           padding: const EdgeInsets.only(
             top: 80,
             left: 46,
@@ -90,7 +90,7 @@ class _RegisterPage extends State<RegisterPage> {
                                         context, _namaBalita, _namaOrtu);
                                   },
                                   decoration: InputDecoration(
-                                    hintText : "Masukan Nama Balita Anda",
+                                    hintText: "Masukan Nama Anda",
                                     hintStyle: TextStyle(
                                         fontSize: 12, color: Colors.grey),
                                     contentPadding:
@@ -110,7 +110,7 @@ class _RegisterPage extends State<RegisterPage> {
                                 width: 268,
                                 height: 19.31,
                                 child: Text(
-                                  'Nama Balita',
+                                  'Nama Orang Tua',
                                   style: TextStyle(
                                     color: Color(0xFF1E1349),
                                     fontSize: 14,
@@ -147,7 +147,7 @@ class _RegisterPage extends State<RegisterPage> {
                                         context, _namaOrtu, _noHp);
                                   },
                                   decoration: InputDecoration(
-                                    hintText : "Masukan Nama Anda",
+                                    hintText: "Masukan Nomor Telepon Anda",
                                     hintStyle: TextStyle(
                                         fontSize: 12, color: Colors.grey),
                                     contentPadding:
@@ -167,7 +167,7 @@ class _RegisterPage extends State<RegisterPage> {
                                 width: 268,
                                 height: 19.31,
                                 child: Text(
-                                  'Nama Orang Tua',
+                                  'Nomor Telepon',
                                   style: TextStyle(
                                     color: Color(0xFF1E1349),
                                     fontSize: 14,
@@ -208,7 +208,7 @@ class _RegisterPage extends State<RegisterPage> {
                                   ],
                                   keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
-                                    hintText : "Masukan Nomor Telepon Anda",
+                                    hintText: "Masukan e-mail Anda",
                                     hintStyle: TextStyle(
                                         fontSize: 12, color: Colors.grey),
                                     contentPadding:
@@ -228,7 +228,7 @@ class _RegisterPage extends State<RegisterPage> {
                                 width: 268,
                                 height: 19.31,
                                 child: Text(
-                                  'Nomor Telepon',
+                                  'E-mail',
                                   style: TextStyle(
                                     color: Color(0xFF1E1349),
                                     fontSize: 14,
@@ -267,7 +267,7 @@ class _RegisterPage extends State<RegisterPage> {
                                   obscureText:
                                       !_isPasswordVisible, // This hides the entered text as dots for a password field
                                   decoration: InputDecoration(
-                                    hintText : "Masukan Password Anda",
+                                    hintText: "Masukan Password Anda",
                                     hintStyle: TextStyle(
                                         fontSize: 12, color: Colors.grey),
                                     contentPadding:
@@ -334,7 +334,7 @@ class _RegisterPage extends State<RegisterPage> {
                                   obscureText:
                                       !_isConfirmPasswordVisible, // This hides the entered text as dots for a password field
                                   decoration: InputDecoration(
-                                    hintText : "Ulangi Password Anda",
+                                    hintText: "Ulangi Password Anda",
                                     hintStyle: TextStyle(
                                         fontSize: 12, color: Colors.grey),
                                     contentPadding:
