@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:sempolita_kreanova_app/models/user.dart';
+import 'package:sempolita_kreanova_app/services/myserverconfig.dart';
+import 'package:sempolita_kreanova_app/views/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -33,19 +38,54 @@ class _RegisterPage extends State<RegisterPage> {
     FocusScope.of(context).requestFocus(nextFocus);
   }
 
-  void _registerUser() {
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
+  void _registerUser(BuildContext context) {
     String _namaOrtu = _namaOrtuController.text;
     String _noHp = _noHpController.text;
     String _email = _emailController.text;
     String _pass = _passController.text;
     String _confirmPass = _confirmPassController.text;
 
-    http.post(
-
-    )
+    http.post(Uri.parse("${MyServerConfig.server}/api/v1/auth/register"),
+        body: {
+          "name": "$_namaOrtu",
+          "phone_number": "$_noHp",
+          "email": "$_email",
+          "password": "$_pass"
+        }).then((response) {
+      print(response.statusCode);
+      print(response.body);
+      print(_namaOrtu);
+      print(_noHp);
+      print(_email);
+      print(_pass);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        if (data['status'] == "success") {
+          User user = User.fromJson(data['data']);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Login Success"),
+              backgroundColor: Colors.green,
+            ),
+          );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (content) => LoginPage(),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Login Failed"),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } else if (response.statusCode == 400) {
+        var data = jsonDecode(response.body);
+      }
+    });
   }
 
   @override
@@ -170,11 +210,10 @@ class _RegisterPage extends State<RegisterPage> {
                                   onFieldSubmitted: (term) {
                                     _fieldFocusChange(context, _noHp, _email);
                                   },
-                                  validator: (val) => val!.isEmpty ||
-                                          !val.contains("@") ||
-                                          !val.contains(".")
-                                      ? "Please enter a valid email"
-                                      : null,
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter
+                                        .digitsOnly // Allow only digits
+                                  ],
                                   decoration: InputDecoration(
                                     hintText: "Masukan Nomor Telepon Anda",
                                     hintStyle: TextStyle(
@@ -227,16 +266,17 @@ class _RegisterPage extends State<RegisterPage> {
                                 height: 52,
                                 child: TextFormField(
                                   controller: _emailController,
-                                  keyboardType: TextInputType.emailAddress,
                                   focusNode: _email,
+                                  keyboardType: TextInputType.emailAddress,
                                   textInputAction: TextInputAction.next,
+                                  validator: (val) => val!.isEmpty ||
+                                          !val.contains("@") ||
+                                          !val.contains(".")
+                                      ? "Please enter a valid email"
+                                      : null,
                                   onFieldSubmitted: (term) {
                                     _fieldFocusChange(context, _email, _pass);
                                   },
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter
-                                        .digitsOnly // Allow only digits
-                                  ],
                                   decoration: InputDecoration(
                                     hintText: "Masukan e-mail Anda",
                                     hintStyle: TextStyle(
@@ -426,7 +466,7 @@ class _RegisterPage extends State<RegisterPage> {
                         height: 50.57,
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.pushReplacementNamed(context, '/login');
+                            _registerUser(context);
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Color(0xFF31C48D), // Background color
