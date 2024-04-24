@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterPage extends StatefulWidget {
   @override
@@ -7,11 +8,17 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPage extends State<RegisterPage> {
+  final TextEditingController _namaOrtuController = TextEditingController();
+  final TextEditingController _noHpController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passController = TextEditingController();
+  final TextEditingController _confirmPassController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
   bool _isPasswordVisible = false;
   bool _isConfirmPasswordVisible = false;
-  FocusNode _namaBalita = FocusNode();
   FocusNode _namaOrtu = FocusNode();
   FocusNode _noHp = FocusNode();
+  FocusNode _email = FocusNode();
   FocusNode _pass = FocusNode();
   FocusNode _confirmPass = FocusNode();
 
@@ -24,6 +31,21 @@ class _RegisterPage extends State<RegisterPage> {
       BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
+  }
+
+  void _registerUser() {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+    String _namaOrtu = _namaOrtuController.text;
+    String _noHp = _noHpController.text;
+    String _email = _emailController.text;
+    String _pass = _passController.text;
+    String _confirmPass = _confirmPassController.text;
+
+    http.post(
+
+    )
   }
 
   @override
@@ -83,11 +105,12 @@ class _RegisterPage extends State<RegisterPage> {
                                 width: 287,
                                 height: 52,
                                 child: TextFormField(
-                                  focusNode: _namaBalita,
+                                  controller: _namaOrtuController,
+                                  focusNode: _namaOrtu,
                                   textInputAction: TextInputAction.next,
                                   onFieldSubmitted: (term) {
                                     _fieldFocusChange(
-                                        context, _namaBalita, _namaOrtu);
+                                        context, _namaOrtu, _noHp);
                                   },
                                   decoration: InputDecoration(
                                     hintText: "Masukan Nama Anda",
@@ -140,12 +163,18 @@ class _RegisterPage extends State<RegisterPage> {
                                 width: 287,
                                 height: 52,
                                 child: TextFormField(
-                                  focusNode: _namaOrtu,
+                                  controller: _noHpController,
+                                  focusNode: _noHp,
                                   textInputAction: TextInputAction.next,
+                                  keyboardType: TextInputType.number,
                                   onFieldSubmitted: (term) {
-                                    _fieldFocusChange(
-                                        context, _namaOrtu, _noHp);
+                                    _fieldFocusChange(context, _noHp, _email);
                                   },
+                                  validator: (val) => val!.isEmpty ||
+                                          !val.contains("@") ||
+                                          !val.contains(".")
+                                      ? "Please enter a valid email"
+                                      : null,
                                   decoration: InputDecoration(
                                     hintText: "Masukan Nomor Telepon Anda",
                                     hintStyle: TextStyle(
@@ -197,16 +226,17 @@ class _RegisterPage extends State<RegisterPage> {
                                 width: 287,
                                 height: 52,
                                 child: TextFormField(
-                                  focusNode: _noHp,
+                                  controller: _emailController,
+                                  keyboardType: TextInputType.emailAddress,
+                                  focusNode: _email,
                                   textInputAction: TextInputAction.next,
                                   onFieldSubmitted: (term) {
-                                    _fieldFocusChange(context, _noHp, _pass);
+                                    _fieldFocusChange(context, _email, _pass);
                                   },
                                   inputFormatters: <TextInputFormatter>[
                                     FilteringTextInputFormatter
                                         .digitsOnly // Allow only digits
                                   ],
-                                  keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
                                     hintText: "Masukan e-mail Anda",
                                     hintStyle: TextStyle(
@@ -258,12 +288,17 @@ class _RegisterPage extends State<RegisterPage> {
                                 width: 287,
                                 height: 52,
                                 child: TextFormField(
+                                  controller: _passController,
                                   focusNode: _pass,
                                   textInputAction: TextInputAction.next,
                                   onFieldSubmitted: (term) {
                                     _fieldFocusChange(
                                         context, _pass, _confirmPass);
                                   },
+                                  validator: (val) =>
+                                      val!.isEmpty || (val.length < 3)
+                                          ? "Please enter password"
+                                          : null,
                                   obscureText:
                                       !_isPasswordVisible, // This hides the entered text as dots for a password field
                                   decoration: InputDecoration(
@@ -330,6 +365,7 @@ class _RegisterPage extends State<RegisterPage> {
                                 width: 287,
                                 height: 52,
                                 child: TextFormField(
+                                  controller: _confirmPassController,
                                   focusNode: _confirmPass,
                                   obscureText:
                                       !_isConfirmPasswordVisible, // This hides the entered text as dots for a password field
