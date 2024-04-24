@@ -45,19 +45,20 @@ class _RegisterPage extends State<RegisterPage> {
     String _pass = _passController.text;
     String _confirmPass = _confirmPassController.text;
 
-    http.post(Uri.parse("${MyServerConfig.server}/api/v1/auth/register"),
-        body: {
-          "name": "$_namaOrtu",
-          "phone_number": "$_noHp",
-          "email": "$_email",
-          "password": "$_pass"
-        }).then((response) {
+    var body = jsonEncode({
+      "name": "$_namaOrtu",
+      "phone_number": "$_noHp",
+      "email": "$_email",
+      "password": "$_pass"
+    });
+
+    http
+        .post(Uri.parse("${MyServerConfig.server}/api/v1/auth/register"),
+            headers: {"Content-Type": "application/json"}, body: body)
+        .then((response) {
       print(response.statusCode);
       print(response.body);
-      print(_namaOrtu);
-      print(_noHp);
-      print(_email);
-      print(_pass);
+      print(body);
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         if (data['status'] == "success") {
