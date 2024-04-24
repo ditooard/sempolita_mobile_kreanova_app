@@ -1,5 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
+import 'package:sempolita_kreanova_app/models/user.dart';
+import 'package:sempolita_kreanova_app/services/myserverconfig.dart';
+import 'package:sempolita_kreanova_app/views/dashboard/landing_page.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -8,8 +14,10 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPage extends State<LoginPage> {
   bool _isPasswordVisible = false;
-  FocusNode _noHp = FocusNode();
+  FocusNode _key = FocusNode();
   FocusNode _pass = FocusNode();
+  final TextEditingController _keyController = TextEditingController();
+  final TextEditingController _passController = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -19,6 +27,49 @@ class _LoginPage extends State<LoginPage> {
       BuildContext context, FocusNode currentFocus, FocusNode nextFocus) {
     currentFocus.unfocus();
     FocusScope.of(context).requestFocus(nextFocus);
+  }
+
+  void _login(BuildContext context) {
+    String _key = _keyController.text;
+    String _pass = _passController.text;
+
+    var body = jsonEncode({"key": "$_key", "password": "$_pass"});
+
+    http
+        .post(Uri.parse("${MyServerConfig.server}/api/v1/auth/login"),
+            headers: {"Content-Type": "application/json"}, body: body)
+        .then((response) {
+      print(response.statusCode);
+      print(response.body);
+      print(body);
+      if (response.statusCode == 200) {
+        var data = jsonDecode(response.body);
+        if (data['status'] == "success") {
+          User user = User.fromJson(data['data']);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Login Success"),
+              backgroundColor: Colors.green,
+            ),
+          );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (content) => LandingPage(),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Login Failed"),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } else if (response.statusCode == 400) {
+        var data = jsonDecode(response.body);
+      }
+    });
   }
 
   @override
@@ -83,13 +134,15 @@ class _LoginPage extends State<LoginPage> {
                                         .digitsOnly // Allow only digits
                                   ],
                                   keyboardType: TextInputType.number,
-                                  focusNode: _noHp,
+                                  focusNode: _key,
+                                  controller: _keyController,
                                   textInputAction: TextInputAction.next,
                                   onFieldSubmitted: (term) {
-                                    _fieldFocusChange(context, _noHp, _pass);
+                                    _fieldFocusChange(context, _key, _pass);
                                   },
                                   decoration: InputDecoration(
-                                    hintText: 'Masukan Nomor Telepon atau E-mail',
+                                    hintText:
+                                        'Masukan Nomor Telepon atau E-mail',
                                     hintStyle: TextStyle(
                                         fontSize: 12, color: Colors.grey),
                                     contentPadding:
@@ -140,6 +193,7 @@ class _LoginPage extends State<LoginPage> {
                                 height: 52,
                                 child: TextFormField(
                                   focusNode: _pass,
+                                  controller: _passController,
                                   obscureText:
                                       !_isPasswordVisible, // This hides the entered text as dots for a password field
                                   decoration: InputDecoration(
@@ -199,7 +253,7 @@ class _LoginPage extends State<LoginPage> {
                         height: 50.57,
                         child: ElevatedButton(
                           onPressed: () {
-                            Navigator.pushReplacementNamed(context, '/landingPage');
+                            _login(context);
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Color(0xFF31C48D), // Background color
