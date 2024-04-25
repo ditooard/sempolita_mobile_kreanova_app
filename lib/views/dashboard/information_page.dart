@@ -3,11 +3,13 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class InformationPage extends StatefulWidget {
   @override
-  _InformationPage createState() => _InformationPage();
+  _InformationPageState createState() => _InformationPageState();
 }
 
-class _InformationPage extends State<InformationPage> {
+class _InformationPageState extends State<InformationPage> {
   WebViewController? _controller;
+  bool _isLoading = true;
+  double _progressValue = 0.0;
 
   @override
   void initState() {
@@ -18,10 +20,20 @@ class _InformationPage extends State<InformationPage> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onProgress: (int progress) {
-            // Update loading bar.
+            setState(() {
+              _progressValue = progress / 100;
+            });
           },
-          onPageStarted: (String url) {},
-          onPageFinished: (String url) {},
+          onPageStarted: (String url) {
+            setState(() {
+              _isLoading = true;
+            });
+          },
+          onPageFinished: (String url) {
+            setState(() {
+              _isLoading = false;
+            });
+          },
           onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) {
             if (request.url.startsWith('https://www.youtube.com/')) {
@@ -38,8 +50,34 @@ class _InformationPage extends State<InformationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: WebViewWidget(
-        controller: _controller!,
+      appBar: AppBar(
+        toolbarHeight: 70,
+        automaticallyImplyLeading: false,
+        title: Padding(
+          padding: EdgeInsets.only(top: 50, bottom: 10),
+          child: Text('Informasi Kesehatan Balita'),
+        ),
+      ),
+      body: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: WebViewWidget(
+              controller: _controller!,
+            ),
+          ),
+          if (_isLoading)
+            Positioned(
+              top: 5,
+              left: 0,
+              right: 0,
+              child: LinearProgressIndicator(
+                value: _progressValue,
+                backgroundColor: Colors.grey,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+              ),
+            ),
+        ],
       ),
     );
   }

@@ -43,31 +43,25 @@ class _LoginPage extends State<LoginPage> {
       print(response.body);
       print(body);
       if (response.statusCode == 200) {
-        var data = jsonDecode(response.body);
-        if (data['status'] == "success") {
-          User user = User.fromJson(data['data']);
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Login Success"),
-              backgroundColor: Colors.green,
-            ),
-          );
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (content) => LandingPage(),
-            ),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Login Failed"),
-              backgroundColor: Colors.red,
-            ),
-          );
-        }
-      } else if (response.statusCode == 400) {
-        var data = jsonDecode(response.body);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Login Success"),
+            backgroundColor: Colors.green,
+          ),
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (content) => LandingPage(),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Login Failed"),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     });
   }

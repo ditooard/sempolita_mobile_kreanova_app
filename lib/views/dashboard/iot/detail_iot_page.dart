@@ -23,7 +23,7 @@ class _DetailIot extends State<DetailIot> {
           padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
           child: ElevatedButton(
             onPressed: () {
-              // Add your onPressed logic here
+              Navigator.pop(context);
             },
             style: ElevatedButton.styleFrom(
               minimumSize: Size(200, 50), // Adjust size as needed

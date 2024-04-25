@@ -20,12 +20,20 @@ class _ProfilPage extends State<ProfilePage> {
     double fem = MediaQuery.of(context).size.width / baseWidth;
     double ffem = fem * 0.97;
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 70,
+        automaticallyImplyLeading: false,
+        title: Padding(
+          padding: EdgeInsets.only(top: 50, bottom: 10),
+          child: Text('Profile Ayah Bunda'),
+        ),
+      ),
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
             width: lebarLayar,
-            height: tinggiLayar,
-            padding: const EdgeInsets.only(top: 42),
+            height: 730,
+            padding: const EdgeInsets.only(top: 20),
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(color: Colors.white),
             child: Column(
@@ -33,29 +41,6 @@ class _ProfilPage extends State<ProfilePage> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: double.infinity,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Profile ',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 20,
-                          fontFamily: 'Plus Jakarta Sans',
-                          fontWeight: FontWeight.w700,
-                          height: 0,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 22),
                 Container(
                   width: 380,
                   height: 96,
@@ -108,12 +93,13 @@ class _ProfilPage extends State<ProfilePage> {
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       SizedBox(
                                         width: double.infinity,
                                         child: Text(
-                                          'Dhimas Afri Setiawan',
+                                          'Nama Orang Tua',
                                           style: TextStyle(
                                             color: Color(0xFF333333),
                                             fontSize: 16,
@@ -127,7 +113,7 @@ class _ProfilPage extends State<ProfilePage> {
                                       SizedBox(
                                         width: double.infinity,
                                         child: Text(
-                                          'Orang tua dari Anabella Putri ',
+                                          'Nama Balita',
                                           style: TextStyle(
                                             color: Color(0xFF333333),
                                             fontSize: 12,
@@ -202,7 +188,8 @@ class _ProfilPage extends State<ProfilePage> {
                                       0 * fem, 4 * fem, 0 * fem, 3.5 * fem),
                                   height: double.infinity,
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Container(
                                         margin: EdgeInsets.fromLTRB(0 * fem,
@@ -220,8 +207,98 @@ class _ProfilPage extends State<ProfilePage> {
                                         ),
                                       ),
                                       Container(
-                                        margin: EdgeInsets.fromLTRB(
-                                            0 * fem, 0 * fem, 0 * fem, 0.5 * fem),
+                                        margin: EdgeInsets.fromLTRB(0 * fem,
+                                            0 * fem, 0 * fem, 0.5 * fem),
+                                        width: 16 * fem,
+                                        height: 16 * fem,
+                                        child: Icon(
+                                          Icons.arrow_forward_ios,
+                                          color: Color(0xff31C48D),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/detailProfile');
+                  },
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(
+                        24 * fem, 16 * fem, 24 * fem, 0 * fem),
+                    width: double.infinity,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          margin: EdgeInsets.fromLTRB(
+                              0 * fem, 0 * fem, 0 * fem, 0 * fem),
+                          padding: EdgeInsets.fromLTRB(
+                              12 * fem, 12 * fem, 12 * fem, 12 * fem),
+                          width: double.infinity,
+                          height: 48 * fem,
+                          decoration: BoxDecoration(
+                            color: Color(0xffffffff),
+                            borderRadius: BorderRadius.circular(8 * fem),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0x19000000),
+                                offset: Offset(0 * fem, 0 * fem),
+                                blurRadius: 10.5 * fem,
+                              ),
+                            ],
+                          ),
+                          child: Container(
+                            width: double.infinity,
+                            height: double.infinity,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(
+                                      0 * fem, 0 * fem, 8 * fem, 0 * fem),
+                                  width: 24 * fem,
+                                  height: 24 * fem,
+                                  child: Image.asset(
+                                    'assets/images/mobile-programming.png',
+                                    color: Color(
+                                        0xff31C48D), // Gantilah dengan warna yang sesuai
+                                  ),
+                                ),
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(
+                                      0 * fem, 4 * fem, 0 * fem, 3.5 * fem),
+                                  height: double.infinity,
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.fromLTRB(0 * fem,
+                                            0.5 * fem, 158 * fem, 0 * fem),
+                                        child: Text(
+                                          'Riwayat Posyandu',
+                                          style: SafeGoogleFont(
+                                            'Plus Jakarta Sans',
+                                            fontSize: 12 * ffem,
+                                            fontWeight: FontWeight.w500,
+                                            height: 1.26 * ffem / fem,
+                                            letterSpacing: -0.25 * fem,
+                                            color: Color(0xff818181),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.fromLTRB(0 * fem,
+                                            0 * fem, 0 * fem, 0.5 * fem),
                                         width: 16 * fem,
                                         height: 16 * fem,
                                         child: Icon(
@@ -291,7 +368,8 @@ class _ProfilPage extends State<ProfilePage> {
                                       0 * fem, 4 * fem, 0 * fem, 3.5 * fem),
                                   height: double.infinity,
                                   child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Container(
                                         margin: EdgeInsets.fromLTRB(0 * fem,
@@ -309,8 +387,8 @@ class _ProfilPage extends State<ProfilePage> {
                                         ),
                                       ),
                                       Container(
-                                        margin: EdgeInsets.fromLTRB(
-                                            0 * fem, 0 * fem, 0 * fem, 0.5 * fem),
+                                        margin: EdgeInsets.fromLTRB(0 * fem,
+                                            0 * fem, 0 * fem, 0.5 * fem),
                                         width: 16 * fem,
                                         height: 16 * fem,
                                         child: Icon(
@@ -330,8 +408,8 @@ class _ProfilPage extends State<ProfilePage> {
                   ),
                 ),
                 Container(
-                  padding:
-                      EdgeInsets.fromLTRB(24 * fem, 0 * fem, 24 * fem, 52 * fem),
+                  padding: EdgeInsets.fromLTRB(
+                      24 * fem, 0 * fem, 24 * fem, 52 * fem),
                   width: double.infinity,
                   height: 110 * fem,
                   decoration: BoxDecoration(
@@ -423,7 +501,8 @@ class _ProfilPage extends State<ProfilePage> {
                                                 style: TextStyle(
                                                   color: Color(0xFF999999),
                                                   fontSize: 12,
-                                                  fontFamily: 'Plus Jakarta Sans',
+                                                  fontFamily:
+                                                      'Plus Jakarta Sans',
                                                   fontWeight: FontWeight.w400,
                                                   height: 0,
                                                 ),
@@ -467,7 +546,8 @@ class _ProfilPage extends State<ProfilePage> {
                                                 style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 12,
-                                                  fontFamily: 'Plus Jakarta Sans',
+                                                  fontFamily:
+                                                      'Plus Jakarta Sans',
                                                   fontWeight: FontWeight.w400,
                                                   height: 0,
                                                 ),

@@ -30,7 +30,7 @@ class _CustomBottomNavigationItemState
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: _currentIndex == 0
-              ? Color(0xfff95031) // Warna latar belakang saat item Beranda terpilih
+              ? Color(0xFF31C48D) // Warna latar belakang saat item Beranda terpilih
               : Color(0xff828282), // Warna latar belakang saat item lain terpilih
           boxShadow: [
             BoxShadow(
@@ -47,16 +47,16 @@ class _CustomBottomNavigationItemState
               icon: Image.asset(
                 'assets/images/home.png', // Gantilah dengan path gambar ikon Beranda
                 color: _currentIndex == 0
-                    ? Color(0xfff95031) // Warna ikon saat item Beranda terpilih
+                    ? Color(0xFF31C48D) // Warna ikon saat item Beranda terpilih
                     : Color(0xff828282), // Warna ikon saat item lain terpilih
               ),
               label: 'Informasi',
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
-                'assets/images/Icon-Log.png', // Gantilah dengan path gambar ikon Log Aktivitas
+                'assets/images/gps.png', // Gantilah dengan path gambar ikon Log Aktivitas
                 color: _currentIndex == 1
-                    ? Color(0xfff95031) // Warna ikon saat item Log Aktivitas terpilih
+                    ? Color(0xFF31C48D) // Warna ikon saat item Log Aktivitas terpilih
                     : Color(0xff828282), // Warna ikon saat item lain terpilih
               ),
               label: 'Integrasi IoT',
@@ -65,14 +65,14 @@ class _CustomBottomNavigationItemState
               icon: Image.asset(
                 'assets/images/profile-circle.png', // Gantilah dengan path gambar ikon Profile
                 color: _currentIndex == 2
-                    ? Color(0xfff95031) // Warna ikon saat item Profile terpilih
+                    ? Color(0xFF31C48D) // Warna ikon saat item Profile terpilih
                     : Color(0xff828282), // Warna ikon saat item lain terpilih
               ),
               label: 'Profile',
             ),
           ],
           currentIndex: _currentIndex, // Atur indeks halaman aktif
-          selectedItemColor: Color(0xfff95031), // Warna saat item terpilih (aktif)
+          selectedItemColor: Color(0xFF31C48D), // Warna saat item terpilih (aktif)
           unselectedItemColor: Color(0xff828282), // Warna saat item tidak terpilih (tidak aktif)
           onTap: (index) {
             setState(() {
