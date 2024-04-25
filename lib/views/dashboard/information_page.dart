@@ -74,7 +74,7 @@ class _InformationPageState extends State<InformationPage> {
               child: LinearProgressIndicator(
                 value: _progressValue,
                 backgroundColor: Colors.grey,
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF31C48D)),
               ),
             ),
         ],
