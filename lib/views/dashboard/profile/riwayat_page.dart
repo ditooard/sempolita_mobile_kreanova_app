@@ -1,17 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-class PosyanduData {
-  final double bb;
-  final double tb;
-  final DateTime tanggal;
-
-  PosyanduData({
-    required this.bb,
-    required this.tb,
-    required this.tanggal,
-  });
-}
+import 'package:sempolita_kreanova_app/models/record.dart';
+import 'package:sempolita_kreanova_app/services/myserverconfig.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RiwayatPosyandu extends StatefulWidget {
   @override
@@ -19,13 +13,44 @@ class RiwayatPosyandu extends StatefulWidget {
 }
 
 class _RiwayatPosyanduState extends State<RiwayatPosyandu> {
-  List<PosyanduData> riwayatPosyandu = [
-    PosyanduData(bb: 12, tb: 120, tanggal: DateTime.now()),
-    PosyanduData(
-        bb: 13, tb: 125, tanggal: DateTime.now().subtract(Duration(days: 7))),
-    PosyanduData(
-        bb: 14, tb: 130, tanggal: DateTime.now().subtract(Duration(days: 14))),
-  ];
+  bool _isLoading = false;
+  List<RecordData> riwayatPosyandu = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _checkKoper(context);
+  }
+
+  Future<void> _checkKoper(BuildContext context) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token') ?? '';
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    http.get(Uri.parse("${MyServerConfig.server}/api/v1/records"), headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer $token"
+    }).then((response) {
+      print(response.body);
+      if (response.statusCode == 200) {
+        List<dynamic> responseData = jsonDecode(response.body);
+        setState(() {
+          riwayatPosyandu = responseData.map((data) {
+            return RecordData.fromJson(data);
+          }).toList();
+        });
+      } else {
+        // Tangani kasus jika permintaan gagal
+      }
+    }).whenComplete(() {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,24 +165,27 @@ class _RiwayatPosyanduState extends State<RiwayatPosyandu> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Berat Badan : ${data.bb} kg',
+                              'Berat Badan : ${data.weight} kg',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                             Text(
-                              'Tinggi Badan : ${data.tb} cm',
+                              'Tinggi Badan : ${data.length} cm',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              'Tanggal Pengukuran : ${data.recordedAt}',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
-                        ),
-                        subtitle: Text(
-                          'Tanggal Pengukuran : ${DateFormat('dd-MM-yyyy').format(data.tanggal)}',
-                          style: TextStyle(fontSize: 14),
                         ),
                       ),
                     );

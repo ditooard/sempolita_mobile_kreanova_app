@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:sempolita_kreanova_app/shared/theme.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -7,15 +10,35 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  bool _isDisposed = false;
+
   @override
   void initState() {
     super.initState();
 
-    // Use Future.delayed to wait for 3 seconds
-    Future.delayed(Duration(seconds: 3), () {
-      // Navigate to the '/started' route
-      Navigator.pushReplacementNamed(context, '/getStarted');
+    Timer(Duration(seconds: 3), () {
+      if (!_isDisposed) {
+        checkAuthentication();
+      }
     });
+  }
+
+  void dispose() {
+    _isDisposed = true; // _isDisposed menjadi true saat widget di-"dispose"
+    super.dispose();
+  }
+
+  Future<void> checkAuthentication() async {
+    if (_isDisposed) return; // Periksa kembali apakah widget sudah di-"dispose"
+
+    final prefs = await SharedPreferences.getInstance();
+    final savedToken = prefs.getString('token');
+
+    if (savedToken != null && savedToken.isNotEmpty) {
+      Navigator.pushReplacementNamed(context, '/landingPage');
+    } else {
+      Navigator.pushReplacementNamed(context, '/register');
+    }
   }
 
   @override

@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:sempolita_kreanova_app/services/myserverconfig.dart';
 import 'package:sempolita_kreanova_app/shared/loading.dart';
 import 'package:sempolita_kreanova_app/views/dashboard/landing_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -32,7 +33,7 @@ class _LoginPage extends State<LoginPage> {
 
   void _login(BuildContext context) {
     setState(() {
-      _isLoading = true; 
+      _isLoading = true;
     });
     String _key = _keyController.text;
     String _pass = _passController.text;
@@ -42,9 +43,12 @@ class _LoginPage extends State<LoginPage> {
     http
         .post(Uri.parse("${MyServerConfig.server}/api/v1/auth/login"),
             headers: {"Content-Type": "application/json"}, body: body)
-        .then((response) {
+        .then((response) async {
       print(response.body);
       if (response.statusCode == 200) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', json.decode(response.body)['token']);
+
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text("Login Success"),

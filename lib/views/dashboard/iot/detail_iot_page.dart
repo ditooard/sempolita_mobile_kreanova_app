@@ -6,6 +6,7 @@ import 'package:sempolita_kreanova_app/services/myserverconfig.dart';
 import 'package:sempolita_kreanova_app/shared/loading.dart';
 import 'package:sempolita_kreanova_app/views/dashboard/iot/iot_page.dart';
 import 'package:sempolita_kreanova_app/views/dashboard/landing_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailIot extends StatefulWidget {
   final String boxId;
@@ -31,39 +32,33 @@ class _DetailIot extends State<DetailIot> {
     super.initState();
   }
 
-  void _simpanData(BuildContext context) {
+  Future<void> _simpanData(BuildContext context) async {
     setState(() {
       _isLoading = true;
     });
 
-    var body = jsonEncode({"record_id": "${widget.id}"});
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = prefs.getString('token') ?? '';
+    var body = jsonEncode({"record_id": widget.id});
+
+    print(token);
 
     http
         .post(Uri.parse("${MyServerConfig.server}/api/v1/record_save"),
-            headers: {"Content-Type": "application/json"}, body: body)
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer $token"
+            },
+            body: body)
         .then((response) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Data Tersimpan"),
+          backgroundColor: Colors.green,
+        ),
+      );
+      Navigator.pop(context);
       print(response.body);
-      if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Simpan Data"),
-            backgroundColor: Colors.green,
-          ),
-        );
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (content) => IotPage(),
-          ),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Data Gagal Disimpan"),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
     }).whenComplete(() {
       setState(() {
         _isLoading = false;

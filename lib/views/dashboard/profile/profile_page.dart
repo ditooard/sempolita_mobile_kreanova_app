@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sempolita_kreanova_app/models/font.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -10,6 +11,16 @@ class _ProfilPage extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
+  }
+
+  void _logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    // Hapus token dari SharedPreferences
+    await prefs.remove('token');
+    print('Token dihapus.');
+
+    Navigator.pushReplacementNamed(context, '/login');
   }
 
   @override
@@ -513,12 +524,11 @@ class _ProfilPage extends State<ProfilePage> {
                                       ),
                                       SizedBox(
                                         width:
-                                            4, // Jarak antara tombol "Tidak" dan "Iya"
+                                            4, 
                                       ),
                                       TextButton(
                                         onPressed: () {
-                                          Navigator.pushReplacementNamed(
-                                              context, '/login');
+                                          _logout(context);
                                         },
                                         child: Container(
                                           width: 97.50,

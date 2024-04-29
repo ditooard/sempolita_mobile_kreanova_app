@@ -26,12 +26,13 @@ class _IotPage extends State<IotPage> {
     });
     String _idKoper = _idKoperController.text;
 
+
     http.get(
         Uri.parse(
             "${MyServerConfig.server}/api/v1/record_latest?box_id=$_idKoper"),
         headers: {"Content-Type": "application/json"}).then((response) {
       print(response.body);
-      if (response.statusCode == 200) {
+      if (response.body == 200) {
         Map<String, dynamic> responseData = json.decode(response.body);
         RecordData record = RecordData.fromJson(responseData);
 
@@ -46,7 +47,7 @@ class _IotPage extends State<IotPage> {
             ),
           ),
         );
-      } else {
+      } else if (response.body == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text("ID Koper Tidak Ditemukan"),
@@ -83,7 +84,16 @@ class _IotPage extends State<IotPage> {
               ? LoadingIndicator()
               : ElevatedButton(
                   onPressed: () {
-                    _checkKoper(context);
+                    if (_idKoperController.text == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("ID Koper Tidak Ditemukan"),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                    } else {
+                      _checkKoper(context);
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size(200, 50), // Adjust size as needed

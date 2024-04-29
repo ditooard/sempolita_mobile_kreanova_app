@@ -69,7 +69,7 @@ class _RegisterPage extends State<RegisterPage> {
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text("Login Success"),
+            content: Text("Register Success"),
             backgroundColor: Colors.green,
           ),
         );
