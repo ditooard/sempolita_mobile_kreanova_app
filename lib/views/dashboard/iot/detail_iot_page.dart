@@ -1,14 +1,74 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:sempolita_kreanova_app/services/myserverconfig.dart';
+import 'package:sempolita_kreanova_app/shared/loading.dart';
+import 'package:sempolita_kreanova_app/views/dashboard/iot/iot_page.dart';
+import 'package:sempolita_kreanova_app/views/dashboard/landing_page.dart';
 
 class DetailIot extends StatefulWidget {
+  final String boxId;
+  final int weight;
+  final int length;
+  final int id;
+
+  const DetailIot({
+    required this.boxId,
+    required this.weight,
+    required this.length,
+    required this.id,
+  });
+
   @override
   State<DetailIot> createState() => _DetailIot();
 }
 
 class _DetailIot extends State<DetailIot> {
+  bool _isLoading = false;
   @override
   void initState() {
     super.initState();
+  }
+
+  void _simpanData(BuildContext context) {
+    setState(() {
+      _isLoading = true;
+    });
+
+    var body = jsonEncode({"record_id": "${widget.id}"});
+
+    http
+        .post(Uri.parse("${MyServerConfig.server}/api/v1/record_save"),
+            headers: {"Content-Type": "application/json"}, body: body)
+        .then((response) {
+      print(response.body);
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Simpan Data"),
+            backgroundColor: Colors.green,
+          ),
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (content) => IotPage(),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text("Data Gagal Disimpan"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }).whenComplete(() {
+      setState(() {
+        _isLoading = false;
+      });
+    });
   }
 
   @override
@@ -21,30 +81,32 @@ class _DetailIot extends State<DetailIot> {
         color: Color(0xFFFFFFFF), // Change background color
         child: Container(
           padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(200, 50), // Adjust size as needed
-              padding: EdgeInsets.all(0), // No padding
-              primary: Color(0xFF31C48D),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-              elevation: 4,
-            ),
-            child: Text(
-              'Simpan',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontFamily: 'Plus Jakarta Sans',
-                fontWeight: FontWeight.w400,
-                height: 0,
-              ),
-            ),
-          ),
+          child: _isLoading
+              ? LoadingIndicator()
+              : ElevatedButton(
+                  onPressed: () {
+                    _simpanData(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(200, 50), // Adjust size as needed
+                    padding: EdgeInsets.all(0), // No padding
+                    primary: Color(0xFF31C48D),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    elevation: 4,
+                  ),
+                  child: Text(
+                    'Simpan',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontFamily: 'Plus Jakarta Sans',
+                      fontWeight: FontWeight.w400,
+                      height: 0,
+                    ),
+                  ),
+                ),
         ),
       ),
       body: SingleChildScrollView(
@@ -201,6 +263,8 @@ class _DetailIot extends State<DetailIot> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 16),
                                           child: TextFormField(
+                                            initialValue:
+                                                widget.weight.toString(),
                                             keyboardType: TextInputType.number,
                                             decoration: InputDecoration(
                                               border: InputBorder.none,
@@ -283,6 +347,8 @@ class _DetailIot extends State<DetailIot> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 16),
                                           child: TextFormField(
+                                            initialValue:
+                                                widget.length.toString(),
                                             keyboardType: TextInputType.number,
                                             decoration: InputDecoration(
                                               border: InputBorder.none,

@@ -15,6 +15,7 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPage extends State<RegisterPage> {
   final TextEditingController _namaOrtuController = TextEditingController();
+  final TextEditingController _namaBalitaController = TextEditingController();
   final TextEditingController _noHpController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
@@ -23,6 +24,7 @@ class _RegisterPage extends State<RegisterPage> {
   bool _isConfirmPasswordVisible = false;
   bool _isLoading = false;
   FocusNode _namaOrtu = FocusNode();
+  FocusNode _namaBalita = FocusNode();
   FocusNode _noHp = FocusNode();
   FocusNode _email = FocusNode();
   FocusNode _pass = FocusNode();
@@ -45,6 +47,7 @@ class _RegisterPage extends State<RegisterPage> {
     });
 
     String _namaOrtu = _namaOrtuController.text;
+    String _namaBalita = _namaBalitaController.text;
     String _noHp = _noHpController.text;
     String _email = _emailController.text;
     String _pass = _passController.text;
@@ -52,6 +55,7 @@ class _RegisterPage extends State<RegisterPage> {
 
     var body = jsonEncode({
       "name": "$_namaOrtu",
+      "child_name": "$_namaBalita",
       "phone_number": "$_noHp",
       "email": "$_email",
       "password": "$_pass"
@@ -157,7 +161,7 @@ class _RegisterPage extends State<RegisterPage> {
                                     textInputAction: TextInputAction.next,
                                     onFieldSubmitted: (term) {
                                       _fieldFocusChange(
-                                          context, _namaOrtu, _noHp);
+                                          context, _namaOrtu, _namaBalita);
                                     },
                                     decoration: InputDecoration(
                                       hintText: "Masukan Nama Anda",
@@ -198,6 +202,64 @@ class _RegisterPage extends State<RegisterPage> {
                       Positioned(
                         left: 0,
                         top: 90,
+                        child: Container(
+                          width: 287,
+                          height: 75.39,
+                          child: Stack(
+                            children: [
+                              Positioned(
+                                left: 0,
+                                top: 24.82,
+                                child: Container(
+                                  width: 287,
+                                  height: 52,
+                                  child: TextFormField(
+                                    controller: _namaBalitaController,
+                                    focusNode: _namaBalita,
+                                    textInputAction: TextInputAction.next,
+                                    onFieldSubmitted: (term) {
+                                      _fieldFocusChange(
+                                          context, _namaBalita, _noHp);
+                                    },
+                                    decoration: InputDecoration(
+                                      hintText: "Masukan Nama Anak anda",
+                                      hintStyle: TextStyle(
+                                          fontSize: 12, color: Colors.grey),
+                                      contentPadding:
+                                          EdgeInsets.only(top: 0, left: 20),
+                                      // Sesuaikan angka ini sesuai kebutuhan Anda
+                                      border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Color(0xFFDBD7EB)),
+                                        borderRadius: BorderRadius.circular(17),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                child: SizedBox(
+                                  width: 268,
+                                  height: 19.31,
+                                  child: Text(
+                                    'Nama Anak',
+                                    style: TextStyle(
+                                      color: Color(0xFF1E1349),
+                                      fontSize: 14,
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w400,
+                                      height: 0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 0,
+                        top: 180,
                         child: Container(
                           width: 287,
                           height: 75.39,
@@ -259,7 +321,7 @@ class _RegisterPage extends State<RegisterPage> {
                       ),
                       Positioned(
                         left: 0,
-                        top: 180,
+                        top: 270,
                         child: Container(
                           width: 287,
                           height: 75.39,
@@ -322,7 +384,7 @@ class _RegisterPage extends State<RegisterPage> {
                       ),
                       Positioned(
                         left: 0,
-                        top: 270,
+                        top: 360,
                         child: Container(
                           width: 287,
                           height: 75.39,
@@ -399,7 +461,7 @@ class _RegisterPage extends State<RegisterPage> {
                       ),
                       Positioned(
                         left: 0,
-                        top: 400,
+                        top: 480,
                         child: Container(
                           width: 287,
                           height: 50.57,
@@ -436,7 +498,7 @@ class _RegisterPage extends State<RegisterPage> {
                       ),
                       Positioned(
                         left: 35,
-                        top: 470,
+                        top: 550,
                         child: SizedBox(
                           width: 311,
                           child: GestureDetector(
@@ -474,7 +536,7 @@ class _RegisterPage extends State<RegisterPage> {
                       ),
                       Positioned(
                         left: 63,
-                        top: 500,
+                        top: 600,
                         child: GestureDetector(
                           onTap: () {
                             Navigator.pushReplacementNamed(

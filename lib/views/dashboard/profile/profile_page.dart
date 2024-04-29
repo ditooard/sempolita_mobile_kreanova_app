@@ -229,7 +229,7 @@ class _ProfilPage extends State<ProfilePage> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/detailProfile');
+                    Navigator.pushNamed(context, '/riwayatPosyandu');
                   },
                   child: Container(
                     padding: EdgeInsets.fromLTRB(

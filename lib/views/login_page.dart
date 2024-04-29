@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:sempolita_kreanova_app/models/user.dart';
 import 'package:sempolita_kreanova_app/services/myserverconfig.dart';
 import 'package:sempolita_kreanova_app/shared/loading.dart';
 import 'package:sempolita_kreanova_app/views/dashboard/landing_page.dart';
@@ -33,7 +32,7 @@ class _LoginPage extends State<LoginPage> {
 
   void _login(BuildContext context) {
     setState(() {
-      _isLoading = true; // Set loading menjadi true saat fungsi dimulai
+      _isLoading = true; 
     });
     String _key = _keyController.text;
     String _pass = _passController.text;
@@ -135,11 +134,6 @@ class _LoginPage extends State<LoginPage> {
                                   width: 287,
                                   height: 52,
                                   child: TextFormField(
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter
-                                          .digitsOnly // Allow only digits
-                                    ],
-                                    keyboardType: TextInputType.number,
                                     focusNode: _key,
                                     controller: _keyController,
                                     textInputAction: TextInputAction.next,

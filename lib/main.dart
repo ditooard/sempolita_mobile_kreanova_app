@@ -14,6 +14,7 @@ import 'package:sempolita_kreanova_app/views/forget_pass_page.dart';
 import 'package:sempolita_kreanova_app/views/get_started_page.dart';
 import 'package:sempolita_kreanova_app/views/login_page.dart';
 import 'package:sempolita_kreanova_app/views/register_page.dart';
+import 'package:sempolita_kreanova_app/views/dashboard/profile/riwayat_page.dart';
 import 'package:sempolita_kreanova_app/views/splash_screen_page.dart';
 import 'package:sempolita_kreanova_app/views/term_condition_page.dart';
 
@@ -68,10 +69,10 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => ProfilePage(),
         '/detailProfile': (context) => DetailProfile(),
         '/ubahPass': (context) => UbahPassword(),
-        '/detailIot': (context) => DetailIot(),
         '/iotPage': (context) => IotPage(),
         '/informationPage': (context) => InformationPage(),
         '/landingPage': (context) => LandingPage(),
+        '/riwayatPosyandu': (context) => RiwayatPosyandu(),
       },
     );
   }
