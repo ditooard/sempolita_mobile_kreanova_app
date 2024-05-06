@@ -26,35 +26,25 @@ class _IotPage extends State<IotPage> {
     });
     String _idKoper = _idKoperController.text;
 
-
     http.get(
         Uri.parse(
             "${MyServerConfig.server}/api/v1/record_latest?box_id=$_idKoper"),
         headers: {"Content-Type": "application/json"}).then((response) {
       print(response.body);
-      if (response.body == 200) {
-        Map<String, dynamic> responseData = json.decode(response.body);
-        RecordData record = RecordData.fromJson(responseData);
+      Map<String, dynamic> responseData = json.decode(response.body);
+      RecordData record = RecordData.fromJson(responseData);
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (content) => DetailIot(
-              boxId: record.boxId,
-              weight: record.weight,
-              length: record.length,
-              id: record.id,
-            ),
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (content) => DetailIot(
+            boxId: record.boxId,
+            weight: record.weight,
+            length: record.length,
+            id: record.id,
           ),
-        );
-      } else if (response.body == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("ID Koper Tidak Ditemukan"),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
+        ),
+      );
     }).whenComplete(() {
       setState(() {
         _isLoading = false;
