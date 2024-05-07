@@ -1,3 +1,3 @@
 class MyServerConfig {
-  static const String server = "https://timbangan.protic.web.id";
+  static const String server = "http://139.59.107.28";
 }

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -10,8 +11,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailIot extends StatefulWidget {
   final String boxId;
-  final int weight;
-  final int length;
+  final double weight;
+  final double length;
   final int id;
 
   const DetailIot({
@@ -83,7 +84,6 @@ class _DetailIot extends State<DetailIot> {
                     _simpanData(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(200, 50), // Adjust size as needed
                     padding: EdgeInsets.all(0), // No padding
                     primary: Color(0xFF31C48D),
                     shape: RoundedRectangleBorder(

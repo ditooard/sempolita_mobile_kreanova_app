@@ -1,7 +1,9 @@
+import 'dart:ffi';
+
 class RecordData {
   final String boxId;
-  final int weight;
-  final int length;
+  final double weight;
+  final double length;
   final String recordedAt;
   final int id;
 
