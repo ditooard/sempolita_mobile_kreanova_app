@@ -11,8 +11,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailIot extends StatefulWidget {
   final String boxId;
-  final double weight;
-  final double length;
+  final num weight;
+  final num length;
   final int id;
 
   const DetailIot({
