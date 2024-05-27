@@ -24,7 +24,7 @@ class _LupaPassword extends State<LupaPassword> {
           height: tinggiLayar,
           padding: const EdgeInsets.only(
             top: 80,
-            left: 41,
+            left: 30,
             right: 41,
           ),
           clipBehavior: Clip.antiAlias,

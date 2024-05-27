@@ -93,7 +93,7 @@ class _LoginPage extends State<LoginPage> {
             height: tinggiLayar,
             padding: const EdgeInsets.only(
               top: 150,
-              left: 46,
+              left: 30,
               right: 40,
             ),
             clipBehavior: Clip.antiAlias,

@@ -111,7 +111,7 @@ class _RegisterPage extends State<RegisterPage> {
             height: 800,
             padding: const EdgeInsets.only(
               top: 80,
-              left: 46,
+              left: 30,
               right: 40,
             ),
             clipBehavior: Clip.antiAlias,

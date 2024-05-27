@@ -484,7 +484,7 @@ class _ProfilPage extends State<ProfilePage> {
                                           Navigator.of(context).pop();
                                         },
                                         child: Container(
-                                          width: 97.50,
+                                          width: 80,
                                           height: 25,
                                           padding: const EdgeInsets.symmetric(
                                             horizontal: 12,
