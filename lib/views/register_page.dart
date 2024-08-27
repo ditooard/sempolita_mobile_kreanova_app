@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
-import 'package:sempolita_kreanova_app/models/user.dart';
 import 'package:sempolita_kreanova_app/services/myserverconfig.dart';
 import 'package:sempolita_kreanova_app/shared/loading.dart';
 import 'package:sempolita_kreanova_app/views/login_page.dart';
@@ -97,7 +96,7 @@ class _RegisterPage extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     double lebarLayar = MediaQuery.of(context).size.width;
-    double tinggiLayar = MediaQuery.of(context).size.height;
+    double tinggiLayar = 900;
     return WillPopScope(
       onWillPop: () async {
         SystemNavigator.pop();
@@ -108,451 +107,151 @@ class _RegisterPage extends State<RegisterPage> {
           child: SafeArea(
               child: Container(
             width: lebarLayar,
-            height: 800,
-            padding: const EdgeInsets.only(
-              top: 80,
-              left: 30,
-              right: 40,
-            ),
-            clipBehavior: Clip.antiAlias,
+            height: tinggiLayar,
+            padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 50),
             decoration: BoxDecoration(color: Colors.white),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: 307,
-                  height: 87,
-                  child: Text(
-                    'Yuk, Pantau Terus \nKesehatan Buah Hati Kita !',
-                    style: TextStyle(
-                      color: Color(0xFF1E1349),
-                      fontSize: 28,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w600,
-                      height: 0,
-                    ),
+                Text(
+                  'Yuk, Pantau Terus \nKesehatan Buah Hati Kita !',
+                  style: TextStyle(
+                    color: Color(0xFF1E1349),
+                    fontSize: lebarLayar * 0.07,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w600,
+                    height: 1.2,
                   ),
                 ),
                 const SizedBox(height: 25),
                 Container(
-                  width: 292,
-                  height: 580,
-                  child: Stack(
+                  width: lebarLayar * 0.9,
+                  child: Column(
                     children: [
-                      Positioned(
-                        left: 0,
-                        top: 0,
-                        child: Container(
-                          width: 287,
-                          height: 75.39,
-                          child: Stack(
+                      _buildTextFormField(
+                        "Nama Orang Tua",
+                        "Masukan Nama Anda",
+                        _namaOrtuController,
+                        _namaOrtu,
+                        _namaBalita,
+                      ),
+                      SizedBox(height: 20),
+                      _buildTextFormField(
+                        "Nama Anak",
+                        "Masukan Nama Anak Anda",
+                        _namaBalitaController,
+                        _namaBalita,
+                        _noHp,
+                      ),
+                      SizedBox(height: 20),
+                      _buildTextFormField(
+                        "Nomor Telepon",
+                        "Masukan Nomor Telepon Anda",
+                        _noHpController,
+                        _noHp,
+                        _email,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                      ),
+                      SizedBox(height: 20),
+                      _buildTextFormField(
+                        "E-mail",
+                        "Masukan e-mail Anda",
+                        _emailController,
+                        _email,
+                        _pass,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (val) => val!.isEmpty ||
+                                !val.contains("@") ||
+                                !val.contains(".")
+                            ? "Please enter a valid email"
+                            : null,
+                      ),
+                      SizedBox(height: 20),
+                      _buildPasswordFormField(
+                        "Password",
+                        "Masukan Password Anda",
+                        _passController,
+                        _pass,
+                        _confirmPass,
+                      ),
+                      SizedBox(height: 20),
+                      Container(
+                        width: lebarLayar * 0.8,
+                        height: tinggiLayar * 0.07,
+                        child: _isLoading
+                            ? LoadingIndicator()
+                            : ElevatedButton(
+                                onPressed: () {
+                                  _registerUser(context);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: Color(0xFF31C48D),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(17),
+                                  ),
+                                ),
+                                child: Text(
+                                  'Ayo Mulai !',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: lebarLayar * 0.045,
+                                    fontFamily: 'Poppins',
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                      ),
+                      SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacementNamed(context, '/login');
+                        },
+                        child: Text.rich(
+                          TextSpan(
                             children: [
-                              Positioned(
-                                left: 0,
-                                top: 24.82,
-                                child: Container(
-                                  width: 287,
-                                  height: 52,
-                                  child: TextFormField(
-                                    controller: _namaOrtuController,
-                                    focusNode: _namaOrtu,
-                                    textInputAction: TextInputAction.next,
-                                    onFieldSubmitted: (term) {
-                                      _fieldFocusChange(
-                                          context, _namaOrtu, _namaBalita);
-                                    },
-                                    decoration: InputDecoration(
-                                      hintText: "Masukan Nama Anda",
-                                      hintStyle: TextStyle(
-                                          fontSize: 12, color: Colors.grey),
-                                      contentPadding:
-                                          EdgeInsets.only(top: 0, left: 20),
-                                      // Sesuaikan angka ini sesuai kebutuhan Anda
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Color(0xFFDBD7EB)),
-                                        borderRadius: BorderRadius.circular(17),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                child: SizedBox(
-                                  width: 268,
-                                  height: 19.31,
-                                  child: Text(
-                                    'Nama Orang Tua',
-                                    style: TextStyle(
-                                      color: Color(0xFF1E1349),
-                                      fontSize: 14,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w400,
-                                      height: 0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 0,
-                        top: 90,
-                        child: Container(
-                          width: 287,
-                          height: 75.39,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                left: 0,
-                                top: 24.82,
-                                child: Container(
-                                  width: 287,
-                                  height: 52,
-                                  child: TextFormField(
-                                    controller: _namaBalitaController,
-                                    focusNode: _namaBalita,
-                                    textInputAction: TextInputAction.next,
-                                    onFieldSubmitted: (term) {
-                                      _fieldFocusChange(
-                                          context, _namaBalita, _noHp);
-                                    },
-                                    decoration: InputDecoration(
-                                      hintText: "Masukan Nama Anak anda",
-                                      hintStyle: TextStyle(
-                                          fontSize: 12, color: Colors.grey),
-                                      contentPadding:
-                                          EdgeInsets.only(top: 0, left: 20),
-                                      // Sesuaikan angka ini sesuai kebutuhan Anda
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Color(0xFFDBD7EB)),
-                                        borderRadius: BorderRadius.circular(17),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                child: SizedBox(
-                                  width: 268,
-                                  height: 19.31,
-                                  child: Text(
-                                    'Nama Anak',
-                                    style: TextStyle(
-                                      color: Color(0xFF1E1349),
-                                      fontSize: 14,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w400,
-                                      height: 0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 0,
-                        top: 180,
-                        child: Container(
-                          width: 287,
-                          height: 75.39,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                left: 0,
-                                top: 24.82,
-                                child: Container(
-                                  width: 287,
-                                  height: 52,
-                                  child: TextFormField(
-                                    controller: _noHpController,
-                                    focusNode: _noHp,
-                                    textInputAction: TextInputAction.next,
-                                    keyboardType: TextInputType.number,
-                                    onFieldSubmitted: (term) {
-                                      _fieldFocusChange(context, _noHp, _email);
-                                    },
-                                    inputFormatters: <TextInputFormatter>[
-                                      FilteringTextInputFormatter
-                                          .digitsOnly // Allow only digits
-                                    ],
-                                    decoration: InputDecoration(
-                                      hintText: "Masukan Nomor Telepon Anda",
-                                      hintStyle: TextStyle(
-                                          fontSize: 12, color: Colors.grey),
-                                      contentPadding:
-                                          EdgeInsets.only(top: 0, left: 20),
-                                      // Sesuaikan angka ini sesuai kebutuhan Anda
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Color(0xFFDBD7EB)),
-                                        borderRadius: BorderRadius.circular(17),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                child: SizedBox(
-                                  width: 268,
-                                  height: 19.31,
-                                  child: Text(
-                                    'Nomor Telepon',
-                                    style: TextStyle(
-                                      color: Color(0xFF1E1349),
-                                      fontSize: 14,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w400,
-                                      height: 0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 0,
-                        top: 270,
-                        child: Container(
-                          width: 287,
-                          height: 75.39,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                left: 0,
-                                top: 24.82,
-                                child: Container(
-                                  width: 287,
-                                  height: 52,
-                                  child: TextFormField(
-                                    controller: _emailController,
-                                    focusNode: _email,
-                                    keyboardType: TextInputType.emailAddress,
-                                    textInputAction: TextInputAction.next,
-                                    validator: (val) => val!.isEmpty ||
-                                            !val.contains("@") ||
-                                            !val.contains(".")
-                                        ? "Please enter a valid email"
-                                        : null,
-                                    onFieldSubmitted: (term) {
-                                      _fieldFocusChange(context, _email, _pass);
-                                    },
-                                    decoration: InputDecoration(
-                                      hintText: "Masukan e-mail Anda",
-                                      hintStyle: TextStyle(
-                                          fontSize: 12, color: Colors.grey),
-                                      contentPadding:
-                                          EdgeInsets.only(top: 0, left: 20),
-                                      // Sesuaikan angka ini sesuai kebutuhan Anda
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Color(0xFFDBD7EB)),
-                                        borderRadius: BorderRadius.circular(17),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                child: SizedBox(
-                                  width: 268,
-                                  height: 19.31,
-                                  child: Text(
-                                    'E-mail',
-                                    style: TextStyle(
-                                      color: Color(0xFF1E1349),
-                                      fontSize: 14,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w400,
-                                      height: 0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 0,
-                        top: 360,
-                        child: Container(
-                          width: 287,
-                          height: 75.39,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                left: 0,
-                                top: 24.82,
-                                child: Container(
-                                  width: 287,
-                                  height: 52,
-                                  child: TextFormField(
-                                    controller: _passController,
-                                    focusNode: _pass,
-                                    textInputAction: TextInputAction.next,
-                                    onFieldSubmitted: (term) {
-                                      _fieldFocusChange(
-                                          context, _pass, _confirmPass);
-                                    },
-                                    validator: (val) =>
-                                        val!.isEmpty || (val.length < 3)
-                                            ? "Please enter password"
-                                            : null,
-                                    obscureText:
-                                        !_isPasswordVisible, // This hides the entered text as dots for a password field
-                                    decoration: InputDecoration(
-                                      hintText: "Masukan Password Anda",
-                                      hintStyle: TextStyle(
-                                          fontSize: 12, color: Colors.grey),
-                                      contentPadding:
-                                          EdgeInsets.only(top: 0, left: 20),
-                                      border: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Color(0xFFDBD7EB)),
-                                        borderRadius: BorderRadius.circular(17),
-                                      ),
-                                      suffixIcon: IconButton(
-                                        icon: Icon(
-                                          _isPasswordVisible
-                                              ? Icons.visibility
-                                              : Icons.visibility_off,
-                                          color: Colors.grey, // Warna ikon mata
-                                        ),
-                                        onPressed: () {
-                                          setState(() {
-                                            _isPasswordVisible =
-                                                !_isPasswordVisible;
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Positioned(
-                                child: SizedBox(
-                                  width: 268,
-                                  height: 19.31,
-                                  child: Text(
-                                    'Password',
-                                    style: TextStyle(
-                                      color: Color(0xFF1E1349),
-                                      fontSize: 14,
-                                      fontFamily: 'Poppins',
-                                      fontWeight: FontWeight.w400,
-                                      height: 0,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 0,
-                        top: 480,
-                        child: Container(
-                          width: 287,
-                          height: 50.57,
-                          child: _isLoading
-                              ? LoadingIndicator()
-                              : ElevatedButton(
-                                  onPressed: () {
-                                    _registerUser(context);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary:
-                                        Color(0xFF31C48D), // Background color
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(17),
-                                    ),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12.87),
-                                    child: Text(
-                                      'Ayo Mulai !',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w500,
-                                        height: 0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 35,
-                        top: 550,
-                        child: SizedBox(
-                          width: 311,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacementNamed(context, '/login');
-                            },
-                            child: Text.rich(
                               TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Sudah Memiliki Akun? ',
-                                    style: TextStyle(
-                                      color: Color(0xFF999999),
-                                      fontSize: 12,
-                                      fontFamily: 'Plus Jakarta Sans',
-                                      fontWeight: FontWeight.w400,
-                                      height: 0,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: 'Login Sekarang',
-                                    style: TextStyle(
-                                      color: Color(0xFF31C48D),
-                                      fontSize: 12,
-                                      fontFamily: 'Plus Jakarta Sans',
-                                      fontWeight: FontWeight.w600,
-                                      height: 0,
-                                    ),
-                                  ),
-                                ],
+                                text: 'Sudah Memiliki Akun? ',
+                                style: TextStyle(
+                                  color: Color(0xFF999999),
+                                  fontSize: lebarLayar * 0.03,
+                                  fontFamily: 'Plus Jakarta Sans',
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
-                            ),
+                              TextSpan(
+                                text: 'Login Sekarang',
+                                style: TextStyle(
+                                  color: Color(0xFF31C48D),
+                                  fontSize: lebarLayar * 0.03,
+                                  fontFamily: 'Plus Jakarta Sans',
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      Positioned(
-                        left: 63,
-                        top: 600,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.pushReplacementNamed(
-                                context, '/termsConditions');
-                          },
-                          child: Text(
-                            'Terms and Conditions',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Color(0xFF31C48D),
-                              fontSize: 14,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w300,
-                              decoration: TextDecoration.underline,
-                              height: 0,
-                            ),
+                      SizedBox(height: 20),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pushReplacementNamed(
+                              context, '/termsConditions');
+                        },
+                        child: Text(
+                          'Terms and Conditions',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color(0xFF31C48D),
+                            fontSize: lebarLayar * 0.035,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w300,
+                            decoration: TextDecoration.underline,
                           ),
                         ),
                       ),
@@ -564,6 +263,140 @@ class _RegisterPage extends State<RegisterPage> {
           )),
         ),
       ),
+    );
+  }
+
+  Widget _buildTextFormField(
+    String label,
+    String hint,
+    TextEditingController controller,
+    FocusNode currentFocus,
+    FocusNode nextFocus, {
+    TextInputType keyboardType = TextInputType.text,
+    List<TextInputFormatter>? inputFormatters,
+    String? Function(String?)? validator,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            color: Color(0xFF1E1349),
+            fontSize: MediaQuery.of(context).size.width * 0.04,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        SizedBox(height: 5),
+        TextFormField(
+          controller: controller,
+          focusNode: currentFocus,
+          textInputAction: TextInputAction.next,
+          keyboardType: keyboardType,
+          inputFormatters: inputFormatters,
+          validator: validator,
+          onFieldSubmitted: (term) {
+            _fieldFocusChange(context, currentFocus, nextFocus);
+          },
+          decoration: InputDecoration(
+            hintText: hint,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 16,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Color(0xFF31C48D),
+                width: 1.5,
+              ),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Color(0xFF1E1349),
+                width: 1.5,
+              ),
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          style: TextStyle(
+            fontSize: MediaQuery.of(context).size.width * 0.04,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPasswordFormField(
+    String label,
+    String hint,
+    TextEditingController controller,
+    FocusNode currentFocus,
+    FocusNode nextFocus,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            color: Color(0xFF1E1349),
+            fontSize: MediaQuery.of(context).size.width * 0.04,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        SizedBox(height: 5),
+        TextFormField(
+          controller: controller,
+          focusNode: currentFocus,
+          textInputAction: TextInputAction.done,
+          obscureText: !_isPasswordVisible,
+          onFieldSubmitted: (term) {
+            _fieldFocusChange(context, currentFocus, nextFocus);
+          },
+          decoration: InputDecoration(
+            hintText: hint,
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 16,
+            ),
+            suffixIcon: IconButton(
+              icon: Icon(
+                _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                color: Colors.grey,
+              ),
+              onPressed: () {
+                setState(() {
+                  _isPasswordVisible = !_isPasswordVisible;
+                });
+              },
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Color(0xFF31C48D),
+                width: 1.5,
+              ),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Color(0xFF1E1349),
+                width: 1.5,
+              ),
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          style: TextStyle(
+            fontSize: MediaQuery.of(context).size.width * 0.04,
+            fontFamily: 'Poppins',
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ],
     );
   }
 }
